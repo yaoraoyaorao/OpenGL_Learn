@@ -1,0 +1,12 @@
+﻿  main.cpp
+main.obj : error LNK2019: 无法解析的外部符号 _glewInit@0，函数 _main 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 ___glewBindBuffer
+main.obj : error LNK2001: 无法解析的外部符号 ___glewBufferData
+main.obj : error LNK2001: 无法解析的外部符号 ___glewGenBuffers
+main.obj : error LNK2001: 无法解析的外部符号 ___glewEnableVertexAttribArray
+main.obj : error LNK2001: 无法解析的外部符号 ___glewVertexAttribPointer
+main.obj : error LNK2001: 无法解析的外部符号 ___glewBindVertexArray
+main.obj : error LNK2001: 无法解析的外部符号 ___glewGenVertexArrays
+main.obj : error LNK2001: 无法解析的外部符号 _glewExperimental
+E:\Learn\C++\Project\OpenGL\OpenGL03\packages\glew.1.9.0.1\build\native\lib\v110\x64\Debug\static\glew.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+E:\Learn\C++\Project\OpenGL\OpenGL03\Debug\OpenGL_Learn.exe : fatal error LNK1120: 9 个无法解析的外部命令
