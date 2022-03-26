@@ -6,6 +6,11 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 using namespace std;
 
 #pragma region 函数声明
@@ -101,6 +106,8 @@ int main()
 	glfwSetFramebufferSizeCallback(window, frame_buffersize_callback);
 	//贴图y轴反转
 	stbi_set_flip_vertically_on_load(true);
+	//开启深度测试
+	glEnable(GL_DEPTH_TEST);
 #pragma endregion
 	
 	//创建Shader
@@ -122,12 +129,24 @@ int main()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	unsigned int texture1,texture2;
-	texture1 = LoadTexure("images/container.jpg", 0,GL_RGB,GL_RGB);
+	unsigned int texture1, texture2;
+	texture1 = LoadTexure("images/container.jpg", 0, GL_RGB, GL_RGB);
 	texture2 = LoadTexure("images/awesomeface.png", 1, GL_RGB, GL_RGBA);
+	
+	//变换
+	glm::mat4 model(1.0f);
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0, 0));
+	glm::mat4 view(1.0f);
+	view = glm::translate(view, glm::vec3(0, 0, -3.0f));
+	glm::mat4 projection(1.0f);
+	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+
 	shader->Use();
 	shader->SetInt("ourTexture1", 0);
 	shader->SetInt("ourTexture2", 1);
+	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(shader->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 #pragma endregion
 
 	
@@ -141,10 +160,10 @@ int main()
 #pragma region 渲染指令
 		//清屏
 		glClearColor(.2f, .3f, .5f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		shader->Use();
-
+		
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 #pragma endregion
